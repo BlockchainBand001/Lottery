@@ -9,7 +9,7 @@ import sys
 def git_pull():
     subprocess.run(['git', 'pull'])
 
-def git_push(username, message, use_lfs):
+def git_push(username, message, branch, use_lfs):
     cmd = ['git']
     if username:
         subprocess.run(cmd + ['add'] + ['.'])
@@ -100,7 +100,7 @@ def main():
     status_output = subprocess.run(['git', 'status', '--porcelain'], capture_output=True, text=True).stdout.strip()
     if status_output:
         print("Pushing new files to remote repository...")
-        git_push(username, message, use_lfs)
+        git_push(username, message, branch, use_lfs)
     else:
         print("No new files to push.")
 
