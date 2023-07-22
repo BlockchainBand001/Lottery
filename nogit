@@ -1,0 +1,102 @@
+#!/usr/bin/env python
+import argparse
+import subprocess
+import datetime
+import os
+def git_pull():
+    subprocess.run(['git', 'pull'])
+
+def git_push(username, message, use_lfs):
+    cmd = ['git', 'add', '.']
+    subprocess.run(cmd)
+
+    if use_lfs:
+        cmd = ['git', 'lfs', 'push', 'origin', 'master']
+    else:
+        cmd = ['git', 'push', 'origin', 'master']
+
+    if message:
+        cmd.extend(['-m', f'"uploaded by {username} - {message}"'])
+    else:
+        cmd.extend(['-m', f'"uploaded by {username}"'])
+
+    subprocess.run(cmd)
+
+def run_git_commands(branch, username, message):
+    if not username:
+        print("Please provide a username (--u username) argument.")
+        return
+
+    if not branch:
+        branch = "General_branch"
+
+    if not message:
+        current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+        message = f"uploaded by {username} on {current_date}"
+
+    # Run git commands
+    subprocess.run(["git", "commit", "-m", message])
+    subprocess.run(["git", "branch", "-M", branch])
+    subprocess.run(["git", "push", "-u", "origin", branch])
+
+def move_removed_files():
+    current_dir = os.getcwd()
+    while os.path.basename(current_dir) != "Lottery":
+        os.chdir('..')
+        current_dir = os.getcwd()
+
+    files_to_move = subprocess.run(['git', 'ls-files', '--deleted'], capture_output=True, text=True).stdout.strip()
+    files_to_move = files_to_move.split('\n')
+
+    for file in files_to_move:
+        if file:
+            file_path = os.path.join(current_dir, file)
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            os.rename(file, file_path)
+
+def main():
+    art = """               ++  :|
+:::\ ,::\ /::| :| :::|
+:|:| `::/ \::| :|  :|
+          ,.:/         """
+    print(art)
+    print("...nogit is an open source framework on top of git that can simplify unnecessary git commands")
+    print("...nogit can also automate many mundane tasks you do on your machine")
+    print("...you can check the source code in https://github.com/nathfavour/NOGIT ")
+    print("\n")
+ 
+    parser = argparse.ArgumentParser(description='Emulate basic Git operations.')
+    parser.add_argument('--u', dest="username", default='default_user', help='Specify the username for commit message.')
+    parser.add_argument('--m', dest="message", default=None, help='Specify the commit message.')
+    parser.add_argument('--L', '--lfs', action='store_true', help='Use Git Large File Storage (LFS).')
+    parser.add_argument("--b", dest="branch", default=None, help="Branch name")
+
+    args = parser.parse_args()
+    username = args.username
+    message = args.message
+    use_lfs = args.L
+    print("Comparing local and remote repository branches...")
+    git_pull()
+   
+    print("Checking for new files...")
+    subprocess.run(['git', 'add', '.'])
+
+    status_output = subprocess.run(['git', 'status', '--porcelain'], capture_output=True, text=True).stdout.strip()
+    if status_output:
+        print("Pushing new files to remote repository...")
+        git_push(username, message, use_lfs)
+    else:
+        print("No new files to push.")
+
+    print("Checking for removed files...")
+    move_removed_files()
+
+    if args.branch:
+        run_git_commands(args.branch, args.username, args.message)
+    elif args.message:
+        git_push(args.username, args.message, args.L)
+    else:
+        git_pull()
+
+if __name__ == '__main__':
+    main()
