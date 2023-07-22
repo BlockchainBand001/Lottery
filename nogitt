@@ -9,7 +9,7 @@ import sys
 def git_pull():
     subprocess.run(['git', 'pull'])
 
-def git_push(username, message, branch, use_lfs):
+def git_push(username, message=None, branch=None, use_lfs=None):
     cmd = ['git']
     if username:
         subprocess.run(cmd + ['add'] + ['.'])
@@ -100,23 +100,16 @@ def main():
     status_output = subprocess.run(['git', 'status', '--porcelain'], capture_output=True, text=True).stdout.strip()
     if status_output:
         print("Pushing new files to remote repository...")
-        git_push(username, message, branch, use_lfs)
-    else:
-        print("No new files to push.")
-
-    print("Checking for removed files...")
-    move_removed_files()
-    try:
-        move_removed_files()
-    except:
-        print("There is an error somewhere... Please leave a notification in the question.txt file.")
-        print("Someone will see it and help you perform your git operations instead")
-        sys.exit()
+        try:
+            move_removed_files()
+        except:
+            print("There is an error somewhere... Please leave a notification in the question.txt file.")
+            print("Someone will see it and help you perform your git operations instead")
+            sys.exit()
     if username:
         git_push(username)
     else:
-        print("You did not provide a (--u username) argument, so a pull operation will run instead...")
-        git_pull()
-
+        print("You did not provide a (--u username) argument, so a pull operation has been run instead...")
+        sys.exit()
 if __name__ == '__main__':
     main()
