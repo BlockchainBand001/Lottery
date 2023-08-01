@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lottery Site</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background: url("Lottery_site.jpeg") no-repeat center center fixed;
+      background-size: cover;
+      overflow: hidden;
+    }
+
+    #centerDiv {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: cyan;
+      padding: 20px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #registerButton {
+      background-color: white;
+      color: cyan;
+      border: none;
+      padding: 15px 30px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      border-radius: 50px;
+    }
+
+    #registerButton:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown {
+      display: none;
+      background-color: white;
+      border-radius: 10px;
+      position: absolute;
+      top: 90px;
+      left: 0;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 12px 16px;
+      text-decoration: none;
+      color: cyan;
+      text-align: center;
+    }
+
+    .dropdown a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown.show {
+      display: block;
+    }
+
+    #formContainer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(255, 255, 255, 0.5);
+      padding: 30px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    #error {
+      color: red;
+      text-align: center;
+    }
+
+    #submitBtn {
+      background-color: blue;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="centerDiv">
+    <button id="registerButton" onclick="showDropdown()">Register &#x25BE;</button>
+    <div class="dropdown" id="dropdown">
+      <a href="#" onclick="showForm('register')">Register</a>
+      <a href="#" onclick="showForm('signup')">Sign Up</a>
+    </div>
+  </div>
+
+  <div id="formContainer">
+    <form id="registerForm">
+      <input type="text" placeholder="Username" id="username">
+      <input type="password" placeholder="Password" id="password">
+      <input type="password" placeholder="Password Again" id="passwordAgain">
+      <label><input type="checkbox" id="termsAgree"> Agree to terms of Blockchain Lottery team?</label>
+      <p id="error"></p>
+      <button type="button" id="submitBtn" onclick="submitForm()">Submit</button>
+    </form>
+  </div>
+
+  <script>
+
+    function showDropdown() {
+      var dropdown = document.getElementById("dropdown");
+      dropdown.classList.toggle("show");
+    }
+
+    function showForm(formType) {
+      var formContainer = document.getElementById("formContainer");
+      var submitBtn = document.getElementById("submitBtn");
+      formContainer.style.display = "block";
+      submitBtn.style.display = "none";
+      if (formType === "register") {
+        submitBtn.textContent = "Register";
+      } else {
+        submitBtn.textContent = "Sign Up";
+      }
+    }
+
+  document.getElementById("registerForm").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      submitForm();
+    }
+  });
+
+  function submitForm() {
+  var username = document.getElementById("username").value;
+  var password = document.getElementById("password").value;
+  var passwordAgain = document.getElementById("passwordAgain").value;
+  var termsAgree = document.getElementById("termsAgree").checked;
+
+  var error = document.getElementById("error");
+
+  if (password !== passwordAgain) {
+    error.textContent = "Passwords don't match!";
+    return;
+  }
+
+  // Save user data to local storage
+  var userData = {
+    username: username,
+    password: password,
+    passwordAgain: passwordAgain,
+    datetime: new Date().toISOString()
+  };
+  var usersDataArray = JSON.parse(localStorage.getItem("usersData")) || [];
+  usersDataArray.push(userData);
+  localStorage.setItem("usersData", JSON.stringify(usersDataArray));
+
+  // Show success message
+  var formContainer = document.getElementById("formContainer");
+  var submitBtn = document.getElementById("submitBtn");
+
+  formContainer.style.display = "none";
+  submitBtn.style.display = "block";
+  submitBtn.textContent = "Submitted!";
+  setTimeout(function() {
+    submitBtn.textContent = "Submit";
+    // Redirect to index.html
+    window.location.href = "index.html";
+  }, 2000);
+}
+
+  </script>
+</body>
+</html>
+
+ 
