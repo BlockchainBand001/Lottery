@@ -1,6 +1,99 @@
-<html>
-<p>This page is still being developed</p>
-<p>Please try to login again later :)</p>
-<p style="color:red;">Note: Your password will be used to open your cryptocurrency account, write it down somewhere!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lottery Game</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <button id="playButton">Play</button>
+  <div id="diceContainer">
+    <div class="dice" id="dice1"></div>
+    <div class="dice" id="dice2"></div>
+  </div>
+  <button id="rollButton">Roll Dice</button>
+  <div id="result"></div>
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
 
+button {
+  padding: 10px 20px;
+  font-size: 20px;
+  margin-top: 30px;
+}
+
+#diceContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.dice {
+  width: 100px;
+  height: 100px;
+  background-color: #ccc;
+  margin: 0 20px;
+}
+
+#result {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+  </style>
+  <script>
+  	const playButton = document.getElementById('playButton');
+const diceContainer = document.getElementById('diceContainer');
+const dice1 = document.getElementById('dice1');
+const dice2 = document.getElementById('dice2');
+const rollButton = document.getElementById('rollButton');
+const result = document.getElementById('result');
+
+playButton.addEventListener('click', () => {
+  playButton.style.backgroundColor = 'green';
+  setTimeout(() => {
+    playButton.style.backgroundColor = '';
+    diceContainer.style.display = 'block';
+  }, 1000);
+});
+
+rollButton.addEventListener('click', () => {
+  rollDice();
+});
+
+function rollDice() {
+  const duration = 2000; // 2 seconds
+  const interval = 100; // 100 ms interval for rolling effect
+  const iterations = duration / interval;
+  
+  let count = 0;
+  let intervalId = setInterval(() => {
+    const random1 = getRandomNumber();
+    const random2 = getRandomNumber();
+    dice1.textContent = random1;
+    dice2.textContent = random2;
+    count++;
+    
+    if (count >= iterations) {
+      clearInterval(intervalId);
+      showResult(random1, random2);
+    }
+  }, interval);
+}
+
+function getRandomNumber() {
+  return Math.floor(Math.random() * 6) + 1;
+}
+
+function showResult(num1, num2) {
+  result.textContent = `You got ${num1} and ${num2} numbers! Roll again!!!`;
+}
+
+  </script>
+</body>
 </html>
