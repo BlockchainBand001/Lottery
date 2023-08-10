@@ -8,3 +8,5 @@ Guidelines: https://www.figma.com/file/i142yOKt106907s3rjFfI0/Untitled?type=desi
 
 By July 31st, we should have something good to present🤓
 ## This update contains `dynamic` branch, where the main project, including the Blockchain source code will lie. It is built with next.js
+
+# Deadline extended by 1 week for version 2.0 of BB - Lottery site
