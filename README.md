@@ -1,5 +1,7 @@
 # Lottery
-We flexing with blockchain tech
+We flexin' with blockchain technology
+
+Project lottery is a lottery-based game that is built on top of blockchain and you can check the upcoming website here ...
 
 
 The design stage is still on: https://www.figma.com/proto/i142yOKt106907s3rjFfI0/Untitled?page-id=0%3A1&type=design&node-id=1-3&viewport=565%2C355%2C0.45&t=vKICfRGO9lEFFewK-1&scaling=scale-down&mode=design
