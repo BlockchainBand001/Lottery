@@ -1,0 +1,7 @@
+# Ignore everything in the folder
+frontend/*
+
+# But not the file x
+!frontend/Natural_README.md
+Smart/
+env.py
